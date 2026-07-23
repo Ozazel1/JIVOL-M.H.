@@ -17,10 +17,8 @@ import logging
 from datetime import datetime
 from contextlib import contextmanager
 from flask import Flask, request, jsonify
-from dotenv import load_dotenv
 
 # Configuration
-load_dotenv()
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 OPENROUTER_KEY = os.getenv("OPENROUTER_KEY")
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
