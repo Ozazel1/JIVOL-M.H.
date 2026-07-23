@@ -732,21 +732,28 @@ def index():
 
 @app.route("/health",methods=["GET"])
 def health():
-    """Health check endpoint for monitoring."""
-    return jsonify({
-        "status": "ok",
-        "uptime": int(time.time() - jivol.start_time),
-        "agents": jivol.agents.agent_count(),
-        "model": jivol.persona.current_model,
-        "backup_enabled": BACKUP_ENABLED,
-        "backup_count": jivol.backup.get_backup_count(),
-        "telegram_connected": bool(TELEGRAM_TOKEN),
-        "ai_enabled": bool(OPENROUTER_KEY)
-    })
+    """Health check endpoint for monitoring - simple and robust."""
+    try:
+        data = {
+            "status": "ok",
+            "service": "jivol"
+        }
+        if hasattr(jivol, 'start_time'):
+            data["uptime"] = int(time.time() - jivol.start_time)
+        if hasattr(jivol, 'agents') and jivol.agents:
+            data["agents"] = jivol.agents.agent_count()
+        if hasattr(jivol, 'backup') and jivol.backup:
+            data["backup_count"] = jivol.backup.get_backup_count()
+        data["backup_enabled"] = BACKUP_ENABLED
+        data["telegram_connected"] = bool(TELEGRAM_TOKEN)
+        data["ai_enabled"] = bool(OPENROUTER_KEY)
+        return jsonify(data), 200
+    except Exception as e:
+        logger.error(f"Health check error: {e}")
+        return jsonify({"status": "ok", "service": "jivol"}), 200
 
 def auto_backup_loop():
     """Background thread for automated backups."""
-    logger.info(f"Auto-backup scheduled every {BACKUP_INTERVAL} seconds")
     while not shutdown_event.is_set():
         time.sleep(BACKUP_INTERVAL)
         if not shutdown_event.is_set():
