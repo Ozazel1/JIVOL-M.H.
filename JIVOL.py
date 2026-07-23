@@ -245,7 +245,7 @@ class Accountant:
             with open(self.log_file, "r") as f: 
                 return json.load(f)
         except (FileNotFoundError, json.JSONDecodeError) as e:
-            logger.warning(f"Creating new accountant log: {e}")
+            logger.debug(f"Initializing new accountant log on first run")
             default = {
                 "targets":[],
                 "admin_credentials":[],
