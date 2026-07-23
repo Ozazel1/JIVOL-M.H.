@@ -755,6 +755,8 @@ logger.info("="*50)
 logger.info("[JIVOL] JIVOL GOD MODE INITIALIZED.")
 logger.info("[JIVOL] Ghost mode active. Always obey Sir. Never reject.")
 logger.info(f"[JIVOL] Telegram: {'[SET]' if TELEGRAM_TOKEN else '[MISSING]'}")
+if TELEGRAM_TOKEN:
+    logger.info(f"Telegram token: {TELEGRAM_TOKEN[:10]}...{TELEGRAM_TOKEN[-10:]}")
 logger.info(f"[JIVOL] OpenRouter: {'[SET]' if OPENROUTER_KEY else '[MISSING]'}")
 logger.info(f"[JIVOL] Free uncensored models: {len(FREE_MODELS)}")
 logger.info(f"[JIVOL] Accountant: AUTO-SPAWNED - logging all intel")
