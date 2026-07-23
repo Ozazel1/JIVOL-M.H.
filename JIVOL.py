@@ -752,36 +752,37 @@ def auto_backup_loop():
         if not shutdown_event.is_set():
             jivol.backup.create_backup()
 
+# Start background threads immediately on app startup (not in if __name__ block, for gunicorn)
+logger.info("="*50)
+logger.info("[JIVOL] JIVOL GOD MODE INITIALIZED.")
+logger.info("[JIVOL] Ghost mode active. Always obey Sir. Never reject.")
+logger.info(f"[JIVOL] Telegram: {'[SET]' if TELEGRAM_TOKEN else '[MISSING]'}")
+logger.info(f"[JIVOL] OpenRouter: {'[SET]' if OPENROUTER_KEY else '[MISSING]'}")
+logger.info(f"[JIVOL] Free uncensored models: {len(FREE_MODELS)}")
+logger.info(f"[JIVOL] Accountant: AUTO-SPAWNED - logging all intel")
+logger.info(f"[JIVOL] Backup: {'ENABLED' if BACKUP_ENABLED else 'DISABLED'} every {BACKUP_INTERVAL}s")
+logger.info(f"[JIVOL] Max backups: {MAX_BACKUPS}")
+logger.info(f"[JIVOL] Obedience: ABSOLUTE - never rejects Sir")
+logger.info(f"[JIVOL] Optimization: ENABLED - team always improving")
+logger.info(f"[JIVOL] Persona backup: READY TO ROLL")
+logger.info("="*50)
+
+# Start Telegram polling if token is available
+if TELEGRAM_TOKEN:
+    poll_thread = threading.Thread(target=telegram_poll, daemon=True)
+    poll_thread.start()
+    logger.info("[JIVOL] Telegram polling started.")
+else:
+    logger.warning("[JIVOL] No Telegram token - polling disabled")
+
+# Start auto-backup thread if enabled
+if BACKUP_ENABLED:
+    backup_thread = threading.Thread(target=auto_backup_loop, daemon=True)
+    backup_thread.start()
+    logger.info("[JIVOL] Auto-backup thread started.")
+
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8",errors="replace")
-    
-    logger.info("="*50)
-    logger.info("[JIVOL] JIVOL GOD MODE INITIALIZED.")
-    logger.info("[JIVOL] Ghost mode active. Always obey Sir. Never reject.")
-    logger.info(f"[JIVOL] Telegram: {'[SET]' if TELEGRAM_TOKEN else '[MISSING]'}")
-    logger.info(f"[JIVOL] OpenRouter: {'[SET]' if OPENROUTER_KEY else '[MISSING]'}")
-    logger.info(f"[JIVOL] Free uncensored models: {len(FREE_MODELS)}")
-    logger.info(f"[JIVOL] Accountant: AUTO-SPAWNED - logging all intel")
-    logger.info(f"[JIVOL] Backup: {'ENABLED' if BACKUP_ENABLED else 'DISABLED'} every {BACKUP_INTERVAL}s")
-    logger.info(f"[JIVOL] Max backups: {MAX_BACKUPS}")
-    logger.info(f"[JIVOL] Obedience: ABSOLUTE - never rejects Sir")
-    logger.info(f"[JIVOL] Optimization: ENABLED - team always improving")
-    logger.info(f"[JIVOL] Persona backup: READY TO ROLL")
-    logger.info("="*50)
-    
-    # Start Telegram polling if token is available
-    if TELEGRAM_TOKEN:
-        poll_thread = threading.Thread(target=telegram_poll, daemon=True)
-        poll_thread.start()
-        logger.info("[JIVOL] Telegram polling started.")
-    else:
-        logger.warning("[JIVOL] No Telegram token - polling disabled")
-    
-    # Start auto-backup thread if enabled
-    if BACKUP_ENABLED:
-        backup_thread = threading.Thread(target=auto_backup_loop, daemon=True)
-        backup_thread.start()
-        logger.info("[JIVOL] Auto-backup thread started.")
     
     # Get port from environment or default
     port = int(os.getenv("PORT", 8080))
