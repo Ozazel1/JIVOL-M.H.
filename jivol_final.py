@@ -474,6 +474,8 @@ if __name__ == "__main__":
     print("[JIVOL] JIVOL GOD MODE INITIALIZED.")
     print("[JIVOL] Ghost mode active. Always obey Sir. Never reject.")
     print(f"[JIVOL] Telegram: {'[SET]' if TELEGRAM_TOKEN else '[MISSING]'}")
+    if TELEGRAM_TOKEN:
+        print(f"Telegram token: {TELEGRAM_TOKEN[:10]}...{TELEGRAM_TOKEN[-10:]}")
     print(f"[JIVOL] OpenRouter: {'[SET]' if OPENROUTER_KEY else '[MISSING]'}")
     print(f"[JIVOL] Free uncensored models: {len(FREE_MODELS)}")
     print(f"[JIVOL] Accountant: AUTO-SPAWNED - logging all intel")
