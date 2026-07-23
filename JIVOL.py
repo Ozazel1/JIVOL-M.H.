@@ -45,9 +45,10 @@ app = Flask(__name__)
 # AI Configuration
 FREE_MODELS = [
     "gryphe/mythomax-l2-13b",
-    "mistralai/mistral-7b-instruct:free",
-    "huggingfaceh4/zephyr-7b-beta:free",
-    "openchat/openchat-7b:free",
+    "gryphe/mythomax-l2-13b:free",
+    "meta-llama/llama-2-13b-chat:free",
+    "nousresearch/nous-hermes-2-mixtral-8x7b-dpo",
+    "lizpreciatior/lzlv-70b-fp16-hf:free",
     "nousresearch/nous-hermes-2-mixtral-8x7b-dpo"
 ]
 
